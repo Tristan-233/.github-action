@@ -5,8 +5,9 @@ import subprocess
 token = os.environ["GITHUB_TOKEN"]
 repo = os.environ["GITHUB_REPO"]
 branch = os.environ["GITHUB_BRANCH"]
-username = os.environ["GITHUB_AUTHOR"]
+username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], text=True).strip()
 
+print(branch)
 print(username)
 
 
