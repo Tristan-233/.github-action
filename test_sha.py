@@ -9,7 +9,7 @@ username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], 
 
 print(branch)
 print(username)
-
+print(repo)
 
 url = f"https://api.github.com/repos/{repo}/commits?sha={branch}"
 
