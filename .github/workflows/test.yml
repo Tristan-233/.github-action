@@ -19,22 +19,25 @@ jobs:
 
     - name: Set variables
       run: |
-        echo "BRANCH_NAME=${{ 123 }}" >> $GITHUB_ENV
+        echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
         echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
         echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+
         EMAIL=$(git log -1 --pretty=format:"%ae" || echo "${{ github.actor }}@users.noreply.github.com")
         echo "GITHUB_EMAIL=$EMAIL" >> $GITHUB_ENV
+        echo "COMMIT_SHA=${{ github.sha }}" >> $GITHUB_ENV
 
     - name: Install requests
       run: pip install requests
 
     - name: Run script to get latest SHA
-      run: python test_sha.py
+      run: python test_sha.py 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPO: ${{ env.REPO_NAME }}
         GITHUB_BRANCH: ${{ env.BRANCH_NAME }}
         GITHUB_AUTHOR: ${{ env.USERNAME }}
+        GITHUB_COMMIT_SHA1: ${{ env.COMMIT_SHA }}
     
     
     - name: Send to TestRail and trigger test
