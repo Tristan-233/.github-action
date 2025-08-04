@@ -2,19 +2,16 @@ import os
 import requests
 import subprocess
 
-# 抓最新 commit 的作者名稱
-author_name = subprocess.check_output(
-    ["git", "log", "-1", "--pretty=format:%an"],
-    text=True
-).strip()
+token = os.environ["GITHUB_TOKEN"]
+repo = os.environ["GITHUB_REPO"]
+branch = os.environ["GITHUB_BRANCH"]
+username = os.environ["GITHUB_USER"]
 
-print(author_name)
-# 從環境變數中取得資訊
-token = os.environ['GITHUB_TOKEN']
-repo = os.environ['GITHUB_REPO']
-branch = os.environ['GITHUB_BRANCH']
+print(username)
 
-url = f"https://api.github.com/repos/{repo}/commits/{branch}"
+
+url = f"https://api.github.com/repos/{repo}/commits?sha={branch}"
+
 headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json",
@@ -22,14 +19,14 @@ headers = {
 
 res = requests.get(url, headers=headers)
 if res.status_code == 200:
-    commit_sha = res.json()["sha"]
-    print(f"Latest commit SHA for branch '{author_name}': {commit_sha}")
+    commit_sha = res.json()[0]["sha"]
+    print(f"Latest commit SHA for branch '{username}': {commit_sha}")
 else:
     print(f"Failed to get commit SHA: {res.status_code}")
     print(res.text)
     exit(1)
 
-plan_name = f" {author_name}-{commit_sha}"
+plan_name = f" {username}-{commit_sha}"
 jenkins_url = "https://10.1.127.226/job/RD_Selftest/buildWithParameters"
 jenkins_token = "12345678901234"
 params = {
