@@ -1,10 +1,13 @@
 import os
+import re
 os.chdir(os.path.dirname(__file__))
 import requests
 import subprocess
 
 token = os.environ["GITHUB_TOKEN"]
-repo = os.environ["GITHUB_REPO"]
+remote_url = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
+match = re.search(r"(github\.com[:/])([^/]+/[^/]+)(\.git)?", remote_url)
+repo = match.group(2)
 branch = os.environ["GITHUB_BRANCH"]
 username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], text=True).strip()
 
