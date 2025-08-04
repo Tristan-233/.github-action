@@ -3,11 +3,24 @@ import re
 os.chdir(os.path.dirname(__file__))
 import requests
 import subprocess
+from urllib.parse import urlparse
+
+def get_repo_name():
+    url = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
+
+    if url.startswith("http"):
+        parsed = urlparse(url)
+        path = parsed.path
+    elif url.startswith("git@"):
+        path = url.split(":", 1)[1]
+    else:
+        raise ValueError(f"Unrecognized remote URL format: {url}")
+
+    repo = path.lstrip("/").removesuffix(".git")
+    return repo
 
 token = os.environ["GITHUB_TOKEN"]
-remote_url = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
-match = re.search(r"(github\.com[:/])([^/]+/[^/]+)(?:\.git)?", remote_url)
-repo = match.group(2)
+repo = get_repo_name
 branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
 username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], text=True).strip()
 
