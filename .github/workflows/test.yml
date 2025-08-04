@@ -21,7 +21,7 @@ jobs:
       run: |
         echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
         echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
-        echo "USERNAME=${{ github.repository }}" | cut -d'/' -f1 >> $GITHUB_ENV
+        echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
         EMAIL=$(git log -1 --pretty=format:"%ae" || echo "${{ github.actor }}@users.noreply.github.com")
         echo "GITHUB_EMAIL=$EMAIL" >> $GITHUB_ENV
 
