@@ -18,7 +18,7 @@ def get_repo_name():
 
     repo = path.lstrip("/").removesuffix(".git")
     return repo
-
+#
 token = os.environ["GITHUB_TOKEN"]
 repo = get_repo_name()
 branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
