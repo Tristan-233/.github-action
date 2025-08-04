@@ -28,7 +28,7 @@ plan_name = f" {username}-{commit_sha1}"
 res = requests.get(url, headers=headers)
 if res.status_code == 200:
     print(f"Latest commit SHA for branch '{username}': {commit_sha1}")
-    print(plan_name)
+    print(f"plan name : {plan_name}")
 else:
     print(f"Failed to get commit SHA: {res.status_code}")
     print(res.text)
