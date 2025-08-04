@@ -20,7 +20,7 @@ def get_repo_name():
     return repo
 
 token = os.environ["GITHUB_TOKEN"]
-repo = get_repo_name
+repo = get_repo_name()
 branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
 username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], text=True).strip()
 
