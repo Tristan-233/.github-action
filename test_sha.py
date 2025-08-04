@@ -2,10 +2,10 @@ import os
 import requests
 import subprocess
 
-token = os.environ["GITHUB_TOKEN"]
-repo = os.environ["GITHUB_REPO"]
-branch = os.environ["GITHUB_BRANCH"]
-username = os.environ["GITHUB_AUTHOR"]
+token = os.environ.get["GITHUB_TOKEN"]
+repo = os.environ.get["GITHUB_REPO"]
+branch = os.environ.get["GITHUB_BRANCH"]
+username = os.environ.get["GITHUB_AUTHOR"]
 
 print(username)
 
