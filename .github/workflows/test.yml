@@ -30,6 +30,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPO: ${{ env.REPO_NAME }}
         GITHUB_BRANCH: ${{ env.BRANCH_NAME }}
+        GITHUB_USER: ${{ github.actor }}
     
     
     - name: Send to TestRail and trigger test
@@ -38,7 +39,6 @@ jobs:
         TESTRAIL_URL: ${{ secrets.TESTRAIL_URL }}
         TESTRAIL_USER: ${{ secrets.TESTRAIL_USER }}
         TESTRAIL_API_KEY: ${{ secrets.TESTRAIL_API_KEY }}
-        GITHUB_REPO: ${{ env.GITHUB_REPO }}
-        GITHUB_BRANCH: ${{ env.GITHUB_BRANCH }}
-        GITHUB_EMAIL: ${{ env.GITHUB_EMAIL }}
-        GITHUB_USER: ${{ env.GITHUB_USER }}
+        GITHUB_REPO: ${{ env.REPO_NAME }}
+        GITHUB_BRANCH: ${{ env.BRANCH_NAME }}
+        GITHUB_USER: ${{ github.actor }}
