@@ -10,6 +10,8 @@ token = os.environ["GITHUB_TOKEN"]
 repo = os.environ["GITHUB_REPO"]
 branch = os.environ["GITHUB_BRANCH"]
 username = os.environ["GITHUB_AUTHOR"]
+commit_sha1 = os.environ["GITHUB_COMMIT_SHA1"]
+
 
 print(branch)
 print(username)
@@ -21,17 +23,18 @@ headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json",
 }
+plan_name = f" {username}-{commit_sha1}"
 
 res = requests.get(url, headers=headers)
 if res.status_code == 200:
-    commit_sha1 = os.environ["GITHUB_COMMIT_SHA1"]
     print(f"Latest commit SHA for branch '{username}': {commit_sha1}")
+    print(plan_name)
 else:
     print(f"Failed to get commit SHA: {res.status_code}")
     print(res.text)
     exit(1)
+    
 
-plan_name = f" {username}-{commit_sha1}"
 jenkins_url = "https://10.1.127.226/job/RD_Selftest/buildWithParameters"
 jenkins_token = "12345678901234"
 params = {
