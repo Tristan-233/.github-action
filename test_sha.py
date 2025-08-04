@@ -5,24 +5,11 @@ import requests
 import subprocess
 from urllib.parse import urlparse
 
-def get_repo_name():
-    url = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
-
-    if url.startswith("http"):
-        parsed = urlparse(url)
-        path = parsed.path
-    elif url.startswith("git@"):
-        path = url.split(":", 1)[1]
-    else:
-        raise ValueError(f"Unrecognized remote URL format: {url}")
-
-    repo = path.lstrip("/").removesuffix(".git")
-    return repo
 #
 token = os.environ["GITHUB_TOKEN"]
-repo = get_repo_name()
-branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
-username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], text=True).strip()
+repo = os.environ["GITHUB_REPO"]
+branch = os.environ["GITHUB_BRANCH"]
+username = os.environ["GITHUB_AUTHOR"]
 
 print(branch)
 print(username)
@@ -34,13 +21,10 @@ headers = {
     "Authorization": f"Bearer {token}",
     "Accept": "application/vnd.github.v3+json",
 }
-#
+
 res = requests.get(url, headers=headers)
 if res.status_code == 200:
-    commit_sha1 = subprocess.check_output(
-        ["git", "ls-remote", "origin", "HEAD"],
-        text=True
-    ).split()[0]
+    commit_sha1 = os.environ["GITHUB_COMMIT_SHA1"]
     print(f"Latest commit SHA for branch '{username}': {commit_sha1}")
 else:
     print(f"Failed to get commit SHA: {res.status_code}")
