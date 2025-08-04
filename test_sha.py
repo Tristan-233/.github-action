@@ -8,7 +8,7 @@ token = os.environ["GITHUB_TOKEN"]
 remote_url = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
 match = re.search(r"(github\.com[:/])([^/]+/[^/]+)(\.git)?", remote_url)
 repo = match.group(2)
-branch = os.environ["GITHUB_BRANCH"]
+branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"], text=True).strip()
 username = subprocess.check_output(["git", "log", "-1", "--pretty=format:%an"], text=True).strip()
 
 print(branch)
