@@ -21,8 +21,10 @@ jobs:
       run: |
         echo "BRANCH_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
         echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
-        echo "GITHUB_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
-        echo "GITHUB_EMAIL=$(git log -1 --pretty=format:'%ae')" >> $GITHUB_ENV
+        AUTHOR=$(git log -1 --pretty=format:"%an" || echo "${{ github.actor }}")
+        EMAIL=$(git log -1 --pretty=format:"%ae" || echo "${{ github.actor }}@users.noreply.github.com")
+        echo "GITHUB_AUTHOR=$AUTHOR" >> $GITHUB_ENV
+        echo "GITHUB_EMAIL=$EMAIL" >> $GITHUB_ENV
 
     - name: Install requests
       run: pip install requests
