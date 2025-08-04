@@ -20,14 +20,17 @@ headers = {
 
 res = requests.get(url, headers=headers)
 if res.status_code == 200:
-    commit_sha = res.json()[0]["sha"]
-    print(f"Latest commit SHA for branch '{username}': {commit_sha}")
+    commit_sha1 = subprocess.check_output(
+        ["git", "ls-remote", "origin", "HEAD"],
+        text=True
+    ).split()[0]
+    print(f"Latest commit SHA for branch '{username}': {commit_sha1}")
 else:
     print(f"Failed to get commit SHA: {res.status_code}")
     print(res.text)
     exit(1)
 
-plan_name = f" {username}-{commit_sha}"
+plan_name = f" {username}-{commit_sha1}"
 jenkins_url = "https://10.1.127.226/job/RD_Selftest/buildWithParameters"
 jenkins_token = "12345678901234"
 params = {
