@@ -5,7 +5,7 @@ import subprocess
 token = os.environ["GITHUB_TOKEN"]
 repo = os.environ["GITHUB_REPO"]
 branch = os.environ["GITHUB_BRANCH"]
-username = os.environ["GITHUB_USER"]
+username = os.environ["GITHUB_AUTHOR"]
 
 print(username)
 
